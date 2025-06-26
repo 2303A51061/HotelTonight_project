@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotelTonight-Find Your Perfect Stay</title>
+    <link rel="stylesheet" href="style1.css">
+    
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-links">
+              <h1>HotelTonight</h1>
+                <a href="#" data-section="home">Home</a>
+                <a href="#" data-section="hotels">Gallery</a>
+                <a href="#" data-section="deals">Events</a>
+                <a href="#" data-section="careers">Careers</a>
+                <a href="#" data-section="contact">Contact Us</a>
+            </div>
+            <div class="auth-buttons">
+                <button onclick="openModal('signInModal')">Sign In</button>
+                <button onclick="openModal('signUpModal')">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="section active">
+        <h1>Find Your Perfect Stay in India</h1>
+        <p>Discover luxury hotels at unbeatable prices</p>
+        <div class="search-box">
+            <input type="text" id="locationSearch" placeholder="Where do you want to stay?" oninput="showLocationSuggestions()">
+            <div id="locationSuggestions" class="location-suggestions"></div>
+            <input type="date" id="checkIn">
+            <input type="date" id="checkOut">
+            <select id="priceRange">
+                <option value="">Select Price Range</option>
+                <option value="0-5000">₹0 - ₹5,000</option>
+                <option value="5000-10000">₹5,000 - ₹10,000</option>
+                <option value="10000-20000">₹10,000 - ₹20,000</option>
+                <option value="20000+">₹20,000+</option>
+            </select>
+            <button class="btn" onclick="searchHotels()">Search Hotels</button>
+        </div>
+    </section>
+
+    <section id="hotels" class="section">
+        <div class="grid-container" id="hotelsGrid"></div>
+    </section>
+
+    <section id="deals" class="section">
+        <div class="grid-container" id="dealsGrid"></div>
+    </section>
+
+    <section id="careers" class="section">
+        <div class="grid-container" id="careersGrid"></div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <h2>Contact Us</h2>
+        <p>We're here to help with your queries</p>
+       
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>Customer Support</h3>
+                <p>24/7 assistance for your booking needs</p>
+                <p>📞 1800-123-4567</p>
+            </div>
+            <div class="contact-card">
+                <h3>Business Inquiries</h3>
+                <p>Partner with us for better reach</p>
+                <p>📧 business@hoteltonight.com</p>
+            </div>
+            <div class="contact-card">
+                <h3>Corporate Office</h3>
+                <p>Mumbai, Maharashtra</p>
+                <p>🏢 Level 23, Premium Tower</p>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <h3>Send us a message</h3>
+            <form onsubmit="handleContactSubmit(event)">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea required></textarea>
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+            <div id="contactSuccess" class="success-message">
+                Thank you for your message. We'll get back to you soon!
+            </div>
+        </div>
+    </section>
+
+    <!-- Sign In Modal -->
+    <div id="signInModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signInModal')">&times;</span>
+            <h2>Sign In</h2>
+            <form onsubmit="handleSignIn(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signUpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signUpModal')">&times;</span>
+            <h2>Sign Up</h2>
+            <form onsubmit="handleSignUp(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-content">
+            <span class="close" onclick="closeModal('paymentModal')">&times;</span>
+            <h2>Complete Your Booking</h2>
+            <div class="payment-summary">
+                <h3>Booking Summary</h3>
+                <p id="bookingSummary"></p>
+            </div>
+            <form onsubmit="handlePayment(event)">
+                <div class="payment-details">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" pattern="\d{16}" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Name on Card</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" pattern="\d{2}/\d{2}" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" pattern="\d{3}" placeholder="123" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Pay Now</button>
+            </form>
+            <div id="paymentSuccess" class="success-message">
+                Payment successful! Your booking is confirmed.
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="application-modal">
+        <div class="application-content">
+            <span class="close" onclick="closeModal('applicationModal')">&times;</span>
+            <h2>Job Application</h2>
+            <div id="jobDetails" class="payment-summary"></div>
+            <form onsubmit="handleApplication(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>Experience (years)</label>
+                    <input type="number" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Resume</label>
+                    <input type="file" accept=".pdf,.doc,.docx" class="file-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Cover Letter</label>
+                    <textarea required></textarea>
+                </div>
+                <button type="submit" class="btn">Submit Application</button>
+            </form>
+            <div id="applicationSuccess" class="success-message">
+                Application submitted successfully! We'll review and get back to you.
+            </div>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>
